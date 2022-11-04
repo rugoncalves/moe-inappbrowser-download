@@ -1,7 +1,6 @@
 var exec = require('cordova/exec');
 
 function download(url, filename, contentType, successCallback, errorCallback){
-console.log(">>> 0");
     var options = {};
     var args = {
         url: url,
@@ -9,30 +8,22 @@ console.log(">>> 0");
         contentType: contentType,
         options: options
     };
-    console.log(">>> 0 url: " + url);
-    console.log(">>> 0 filename: " + filename);
     document.addEventListener('deviceready', function () {
-    console.log(">>> 1");
         setTimeout(function() {
             downloadDocument(args, function(entry, contentType){
                 if (!!successCallback && typeof(successCallback) === 'function'){
                     successCallback(entry, contentType);
                 }
-                console.log(">>> download complete: " + entry.toURL());
             }, function(error){
                 if (!!errorCallback && typeof(errorCallback) === 'function'){
                     errorCallback(error);
                 }
-                console.log(">>> download error source: " + error.source);
-                console.log(">>> download error target: " + error.target);
-                console.log(">>> upload error code: " + error.code);
             }); // call the function which will download the file 1s after the window is closed, just in case..
         }, 1000);
     });
 }
 
 function downloadDocument(args, successCallback, errorCallback){
-console.log(">>> 2");
 
     var uri = encodeURI(args.url);
     var filename = args.filename;
@@ -50,15 +41,11 @@ console.log(">>> 2");
                     if (!!successCallback && typeof(successCallback) === 'function'){
                         successCallback(entry, contentType);
                     }
-                    console.log(">>> download complete: " + entry.toURL());
                 },
                 function(error) {
                      if (!!errorCallback && typeof(errorCallback) === 'function'){
                         errorCallback(error);
                      }
-                    console.log(">>> download error source " + error.source);
-                    console.log(">>> download error target " + error.target);
-                    console.log(">>> download error code" + error.code);
                 },
                 false
             );
@@ -67,7 +54,6 @@ console.log(">>> 2");
 }
 
 function isIphoneX() {
-console.log(">>> 3");
     try {
         const iphoneModel = window.device.model;
         const m = iphoneModel.match(/iPhone(\d+),?(\d+)?/);
@@ -84,7 +70,6 @@ console.log(">>> 3");
 }
 
 exports.close = function(){
-console.log(">>> 4");
     window.inAppBrowserRef.close();
 }
 
@@ -113,10 +98,6 @@ console.log(">>> 5");
     var inAppBrowserOptions = arg0.inAppBrowserOptions;
     var buttonClassName = arg0.buttonClassName;
 
-    console.log(">>> 5 - url: " + url);
-    console.log(">>> 5 - inAppBrowserOptions: " + inAppBrowserOptions);
-    console.log(">>> 5 - buttonClassName: " + buttonClassName);
-
     window.inAppBrowserRef = cordova.InAppBrowser.open(url, '_blank',  inAppBrowserOptions);
 
     //add viewport-fit=cover so we can fill the left and right sides of the notch (if it exists)
@@ -129,11 +110,6 @@ console.log(">>> 5");
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-    //if no setTimeout the click event listener is not added on android
-    //"url: downloadButton.dataset.documenturl," +
-    //"filename: downloadButton.dataset.filename," +
-    //"contentType: downloadButton.dataset.contenttype" +
-    //"debugger;" +
     script += "setTimeout(function(){" +
                 "var downloadButtons = document.querySelectorAll(\"." + buttonClassName + "\");" +
                 "downloadButtons.forEach(function(downloadButton){ " +
@@ -147,7 +123,6 @@ console.log(">>> 5");
                             "var args = {" +
                                 "url: downloadButton.href," +
                                 "filename: fileNameRegex," +
-                                //"contentType: \"\"" +
                             "};" +
                             "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
                         "});" +
@@ -166,23 +141,14 @@ console.log(">>> 5");
     window.inAppBrowserRef.addEventListener('message', function(args) {
         console.log('>>> MESSAGE RECEIVED FROM IN_APP_BROWSER' + JSON.stringify(args));
         download(args.data.url, args.data.filename, args.data.contentType, function(entry, contentType){
-        //console.log(">>> ");
             if (fileOpenMode === "open"){
-                console.log("*>>> Open File");
-                console.log("*>>> entry.toURL: " + entry.toURL());
-                console.log("*>>> contentType: " + contentType);
-                //debugger;
                 cordova.plugins.fileOpener2.open(entry.toURL(), contentType,
                     function(e){
                         debugger;
-                        console.log("*>>> error: " + error);
-                        alert("Erro");
                         error(e);
                     },
                     function(){
                         debugger;
-                        console.log("*>>> Success!!!");
-                        alert("Success");
                         success();
                     }
                 );
@@ -205,11 +171,9 @@ console.log(">>> 5");
                 } else if(cordova.platformId === 'ios'){
                     cordova.plugins.fileOpener2.showOpenWithDialog(entry.toURL(), contentType,
                         function(e){
-                            alert("Erro 2");
                             error(e);
                         },
                         function(){
-                            alert("Sucesso 2");
                             success();
                         }
                     );
