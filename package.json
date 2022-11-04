@@ -1,9 +1,9 @@
 {
-  "name": "com-outsystems-experts-anbinappbrowserdownload",
+  "name": "com-outsystems-experts-moeinappbrowserdownload",
   "version": "0.0.1",
   "description": "",
   "cordova": {
-    "id": "com-outsystems-experts-anbinappbrowserdownload",
+    "id": "com-outsystems-experts-moeinappbrowserdownload",
     "platforms": []
   },
   "keywords": [
