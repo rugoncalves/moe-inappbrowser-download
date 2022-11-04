@@ -1,0 +1,14 @@
+{
+  "name": "com-outsystems-experts-anbinappbrowserdownload",
+  "version": "0.0.1",
+  "description": "",
+  "cordova": {
+    "id": "com-outsystems-experts-anbinappbrowserdownload",
+    "platforms": []
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "",
+  "license": "ISC"
+}
