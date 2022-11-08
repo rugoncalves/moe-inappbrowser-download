@@ -134,7 +134,7 @@ exports.open = function (arg0, success, error) {
           "});" +
         "}" +
       "}, 500);" +
-    "})();" +
+    "})();"
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
