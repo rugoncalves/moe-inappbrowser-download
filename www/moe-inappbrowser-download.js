@@ -109,7 +109,7 @@ exports.open = function (arg0, success, error) {
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-    script += "setTimeout(function(){" +
+script += "setTimeout(function(){" +
                 "var downloadButtons = document.querySelectorAll(\"." + buttonClassName + "\");" +
                 "downloadButtons.forEach(function(downloadButton){ " +
                     "if (downloadButton) {" +
