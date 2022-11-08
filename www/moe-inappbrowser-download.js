@@ -109,32 +109,25 @@ exports.open = function (arg0, success, error) {
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-    script += "(function () {" +
-      "const pattern = /[^/\\\\&\\?]+\\.\\w{3,4}(?=([\\?&/].*$|$))/i;" +
-      "const query = ." + buttonClassName + " :not([data-init=\"set\"]);" +
-      "setInterval(() => {" +
-        "var elements = document.querySelectorAll(" +
-          "query" +
-        ");" +
-        "if (elements.length > 0) {" +
-          "elements.forEach((element) => {" +
-            "const decodedURI = decodeURI(decodeURI(element.href));" +
-            "if (typeof decodedURI !== \"undefined\"){" +
-            "} else {" +
-            "}" +
-            "const fileNameRegex = decodedURI.match(pattern)[0];" +
-            "downloadButton.addEventListener('click', function(e){" +
-                "var args = {" +
-                    "url: element.href," +
-                    "filename: fileNameRegex," +
-                "};" +
-                "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
-            "});" +
-            "element.setAttribute(\"data-init\", \"set\");" +
-          "});" +
-        "}" +
-      "}, 500);" +
-    "})();"
+    script += "setTimeout(function(){" +
+                "var downloadButtons = document.querySelectorAll(\"." + buttonClassName + "\");" +
+                "downloadButtons.forEach(function(downloadButton){ " +
+                    "if (downloadButton) {" +
+                        'let pattern = /[^/\\\\&\\?]+\\.\\w{3,4}(?=([\\?&/].*$|$))/i;' +
+                        "let decodedURI = decodeURI(decodeURI(downloadButton.href));" +
+                        "let fileNameRegex = decodedURI.match(pattern)[0];" +
+                        "debugger;" +
+                        "downloadButton.addEventListener('click', function(e){" +
+                            "debugger;" +
+                            "var args = {" +
+                                "url: downloadButton.href," +
+                                "filename: fileNameRegex," +
+                            "};" +
+                            "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
+                        "});" +
+                    "}" +
+                "});" +
+            "}, 500);";
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
