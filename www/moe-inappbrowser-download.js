@@ -74,7 +74,6 @@ exports.close = function(){
 }
 
 exports.open = function (arg0, success, error) {
-console.log(">>> 5");
     var fileOpenMode = "open";
     var fileOpenModes = ["open", "dialog"];
     var autoFixHeaderSize = true;
@@ -161,17 +160,14 @@ console.log(">>> 5");
                 );
             }
             if (fileOpenMode === "dialog"){
-                console.log(">>> Dialog");
                 if (cordova.platformId === 'android'){
                     cordova.plugins.fileOpener2.save(entry.toURL(), args.data.filename, contentType,
                         function(e){
                             debugger;
-                            alert("Erro 1");
                             error(e);
                         },
                         function(){
                             debugger;
-                            alert("Sucesso 1");
                             success();
                         }
                     );
