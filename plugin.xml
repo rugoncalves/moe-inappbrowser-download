@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com-outsystems-experts-anbinappbrowserdownload" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>anb-inappbrowser-download</name>
-    <js-module name="anb-inappbrowser-download" src="www/anb-inappbrowser-download.js">
-        <clobbers target="cordova.plugins.anbinappbrowserdownload" />
+<plugin id="com-outsystems-experts-moeinappbrowserdownload" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>moe-inappbrowser-download</name>
+    <js-module name="moe-inappbrowser-download" src="www/moe-inappbrowser-download.js">
+        <clobbers target="cordova.plugins.moeinappbrowserdownload" />
     </js-module>
 
     <dependency id="cordova-plugin-inappbrowser" url="https://github.com/os-adv-dev/cordova-plugin-moeinappbrowser.git" />
@@ -13,9 +13,9 @@
     <dependency id="cordova-plugin-device" /> <!-- let's not force a version here so we don't have incompatibilities with MABS -->
 
     <platform name="ios">
-        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+        <!-- <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
             <string>Uses camera so you can take a picture of the contract</string>
-        </config-file>
+        </config-file> -->
         <config-file target="*-Info.plist" parent="LSSupportsOpeningDocumentsInPlace">
           <true/>
     </config-file>
