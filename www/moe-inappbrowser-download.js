@@ -109,16 +109,57 @@ exports.open = function (arg0, success, error) {
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-    script += "setTimeout(function(){" + 
-                    "var listDownloadButtons = document.querySelectorAll('." + buttonClassName + "');" + 
-                    "listDownloadButtons.forEach(function(downloadButton){" + 
-                        "if (downloadButton && downloadButton.href && downloadButton.href !== '#') {" + 
-                            "downloadButton.addEventListener('click', downloadfile);" + 
+    script += "(function(parent){" +
+                    "const pattern = /.*\/(.+?)\.([a-z]+)/;" +
+                    "const pathPattern = /^(?:[^\/]*(?:\/(?:\/[^\/]*\/?)?)?([^?]+)(?:\??.+)?)$/;" +
+                    "parent.moedownloader = parent.moedownloader || {};" +
+                    "parent.moedownloader.getFilename = function (url) {" +
+                        "let fileName = 'unknown-filename';" +
+                        "//Check if is REST API url" +
+                        "if(url.search('/rest/moedownloader/') !== -1) {" +
+                            "const new_url = new URL(url);" +
+                            "const new_filename = new_url.searchParams.get('filename');" +
+                            "if(new_filename !== null) {" +
+                                "fileName = new_filename;" +
+                            "}" +
                         "} else {" +
-                            "console.warn('The following element has class «" + buttonClassName + "» but does not have a valid href: ', downloadButton);" +
-                        "}" + 
-                    "});" + 
-                "}, 1000);";
+                            "const path = url.match(pathPattern)[1];" +
+                            "const match = decodeURI(path).match(pattern);" +
+                            "if(match){" +
+                                "if(match.length > 2){" +
+                                    "fileName = match[1] + '.' + match[2];" +
+                                "} else if(match.length === 2){" +
+                                    "fileName = match[1];" +
+                                "}" +
+                            "}" +
+                        "}" +
+                        "return fileName;" +
+                    "}" +
+                    "parent.moedownloader.download = function(e){" +
+                        "if(e.target.href != undefined && e.target.href != '#') {" +
+                            "e.preventDefault();" +
+                            "e.stopPropagation();" +
+                            "var args = { " +
+                                "url: e.target.href, " +
+                                "filename: parent.moedownloader.getFilename(e.target.href)" +
+                            "};" +
+                            "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
+                        "}" +
+                    "}" +
+                    "parent.moedownloader.intervalFinder = function(){" +
+                        "var listDownloadButtons = document.querySelectorAll('." + buttonClassName + ":not([data-init=\"set\"]');" +
+                        "const platformButton = window.location + '#';" +
+                        "listDownloadButtons.forEach(function(element){" +
+                            "if (element && element.href && element.href !== platformButton) { " +
+                                "element.addEventListener('click', parent.moedownloader.download);" +
+                                "element.setAttribute('data-init', 'set');" +
+                            "} else {" +
+                                "console.warn('The following element has class «" + buttonClassName + "» but does not have a valid href: ', element);" +
+                            "}" +
+                        "});" +
+                    "}" +
+                    "parent.moedownloader.interval = setInterval(parent.moedownloader.intervalFinder, 500);" +
+                "})(window);"
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
