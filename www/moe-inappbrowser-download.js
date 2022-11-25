@@ -124,7 +124,7 @@ exports.open = function (arg0, success, error) {
                             "downloadButton.addEventListener('click', function(e){" + 
                                 "var args = {" + 
                                     "url: downloadButton.href," + 
-                                    "filename: fileNameRegex," + 
+                                    "filename: fileName," + 
                                 "};" + 
                                 "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" + 
                             "});" + 
