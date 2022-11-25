@@ -109,32 +109,19 @@ exports.open = function (arg0, success, error) {
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-    script += "setTimeout(function(){" + 
-                    "function GetFileName(url) {" + 
-                        "const pattern = /.*\/(.+?)\.([a-z]+)/;" + 
-                        "const pathPattern = /^(?:[^\/]*(?:\/(?:\/[^\/]*\/?)?)?([^?]+)(?:\??.+)?)$/;" + 
-                        "const path = url.match(pathPattern)[1];" + 
-                        "const fileName = decodeURI(path).match(pattern);" + 
-                        "return fileName !== null ? fileName[1] + '.' + fileName[2] : '';" + 
-                    "}" + 
-                    "var listDownloadButtons = document.querySelectorAll('." + buttonClassName + "');" + 
-                    "listDownloadButtons.forEach(function(downloadButton){ " + 
-                        "if (downloadButton && downloadButton.href && downloadButton.href !== '#') {" + 
-                            "const fileName = GetFileName(downloadButton.href);" + 
-                            "downloadButton.addEventListener('click', function(e){" + 
-                                "console.log('filename: ' + fileName);"+
-                                "console.log(downloadButton);"+
-                                "var args = {" + 
-                                    "url: downloadButton.href," + 
-                                    "filename: fileName," + 
-                                "};" + 
-                                "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" + 
-                            "});" + 
-                        "} else {" +
-                            "console.warn('The following element has class «" + buttonClassName + "» but does not have a valid href: ', downloadButton);" +
-                        "}" + 
-                    "});" + 
-                "}, 500);";
+    script += "setTimeout(function(){" +
+                    "const oscontroller = require('OutSystems/ClientRuntime/Controller');" +
+                    "oscontroller.BaseViewController.downloadBinary = function (content, filename) {" +
+                        "const blob = new Blob(content);" +
+                        "var args = {" + 
+                            "url: URL.createObjectURL(blob)," + 
+                            "filename: filename," + 
+                        "};" + 
+                        "console.log(filename, args.url);" +
+                        "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));"
+                        
+                    "}" +
+               "}, 1000);";
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
