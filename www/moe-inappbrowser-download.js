@@ -122,6 +122,8 @@ exports.open = function (arg0, success, error) {
                         "if (downloadButton && downloadButton.href && downloadButton.href !== '#') {" + 
                             "const fileName = GetFileName(downloadButton.href);" + 
                             "downloadButton.addEventListener('click', function(e){" + 
+                                "console.log('filename: ' + fileName);"+
+                                "console.log(downloadButton);"+
                                 "var args = {" + 
                                     "url: downloadButton.href," + 
                                     "filename: fileName," + 
@@ -129,7 +131,7 @@ exports.open = function (arg0, success, error) {
                                 "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" + 
                             "});" + 
                         "} else {" +
-                            "console.warn('The following element has class \'" + buttonClassName + "\' but does not have a valid href: ', downloadButton);" +
+                            "console.warn('The following element has class «" + buttonClassName + "» but does not have a valid href: ', downloadButton);" +
                         "}" + 
                     "});" + 
                 "}, 500);";
