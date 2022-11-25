@@ -109,25 +109,30 @@ exports.open = function (arg0, success, error) {
         script += "document.getElementsByTagName(\"body\")[0].classList.add(\"iphone-x\");";
     }
 
-script += "setTimeout(function(){" +
-                "var downloadButtons = document.querySelectorAll(\"." + buttonClassName + "\");" +
-                "downloadButtons.forEach(function(downloadButton){ " +
-                    "if (downloadButton) {" +
-                        'let pattern = /[^/\\\\&\\?]+\\.\\w{3,4}(?=([\\?&/].*$|$))/i;' +
-                        "let decodedURI = decodeURI(decodeURI(downloadButton.href));" +
-                        "let fileNameRegex = decodedURI.match(pattern)[0];" +
-                        "debugger;" +
-                        "downloadButton.addEventListener('click', function(e){" +
-                            "debugger;" +
-                            "var args = {" +
-                                "url: downloadButton.href," +
-                                "filename: fileNameRegex," +
-                            "};" +
-                            "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
-                        "});" +
-                    "}" +
-                "});" +
-            "}, 500);";
+    script += "setTimeout(function(){" + 
+                    "function GetFileName(url) {" + 
+                        "const pattern = /.*\/(.+?)\.([a-z]+)/;" + 
+                        "const pathPattern = /^(?:[^\/]*(?:\/(?:\/[^\/]*\/?)?)?([^?]+)(?:\??.+)?)$/;" + 
+                        "const path = url.match(pathPattern)[1];" + 
+                        "const fileName = decodeURI(path).match(pattern);" + 
+                        "return fileName !== null ? fileName[1] + '.' + fileName[2] : '';" + 
+                    "}" + 
+                    "var listDownloadButtons = document.querySelectorAll('." + buttonClassName + "');" + 
+                    "listDownloadButtons.forEach(function(downloadButton){ " + 
+                        "if (downloadButton && downloadButton.href && downloadButton.href !== '#') {" + 
+                            "const fileName = GetFileName(downloadButton.href);" + 
+                            "downloadButton.addEventListener('click', function(e){" + 
+                                "var args = {" + 
+                                    "url: downloadButton.href," + 
+                                    "filename: fileNameRegex," + 
+                                "};" + 
+                                "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" + 
+                            "});" + 
+                        "} else {" +
+                            "console.warn('The following element has class \'" + buttonClassName + "\' but does not have a valid href: ', downloadButton);" +
+                        "}" + 
+                    "});" + 
+                "}, 500);";
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
