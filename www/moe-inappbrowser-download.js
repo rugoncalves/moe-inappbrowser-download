@@ -148,11 +148,9 @@ exports.open = function (arg0, success, error) {
             if (fileOpenMode === "open"){
                 cordova.plugins.fileOpener2.open(entry.toURL(), contentType,
                     function(e){
-                        debugger;
                         error(e);
                     },
                     function(){
-                        debugger;
                         success();
                     }
                 );
@@ -161,11 +159,9 @@ exports.open = function (arg0, success, error) {
                 if (cordova.platformId === 'android'){
                     cordova.plugins.fileOpener2.save(entry.toURL(), args.data.filename, contentType,
                         function(e){
-                            debugger;
                             error(e);
                         },
                         function(){
-                            debugger;
                             success();
                         }
                     );
