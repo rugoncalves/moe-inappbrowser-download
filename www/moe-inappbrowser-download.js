@@ -159,7 +159,7 @@ exports.open = function (arg0, success, error) {
                         "});" +
                     "}" +
                     "parent.moedownloader.interval = setInterval(parent.moedownloader.intervalFinder, 500);" +
-                "})(window);"
+                "})(window);";
 
     window.inAppBrowserRef.addEventListener('loadstop', function() {
         window.inAppBrowserRef.executeScript({code: script});
