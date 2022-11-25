@@ -112,14 +112,19 @@ exports.open = function (arg0, success, error) {
     script += "setTimeout(function(){" +
                     "const oscontroller = require('OutSystems/ClientRuntime/Controller');" +
                     "oscontroller.BaseViewController.downloadBinary = function (content, filename) {" +
-                        "const blob = new Blob(content);" +
-                        "var args = {" + 
-                            "url: URL.createObjectURL(blob)," + 
-                            "filename: filename," + 
-                        "};" + 
+                        "const byteCharacters = atob(content._content);" +
+                        "const byteNumbers = new Array(byteCharacters.length);" +
+                        "for (let i = 0; i < byteCharacters.length; i++) {" +
+                            "byteNumbers[i] = byteCharacters.charCodeAt(i);" +
+                        "}" +
+                        "const byteArray = new Uint8Array(byteNumbers);" +
+                        "const blob = new Blob([byteArray], {type: 'image/png'});" +
+                        "var args = {
+                                "url: URL.createObjectURL(blob)," +
+                                "filename: filename," +
+                        "};" +
                         "console.log(filename, args.url);" +
-                        "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));"
-                        
+                        "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" +
                     "}" +
                "}, 1000);";
 
