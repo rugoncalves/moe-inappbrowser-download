@@ -110,26 +110,10 @@ exports.open = function (arg0, success, error) {
     }
 
     script += "setTimeout(function(){" + 
-                    "/*function GetFileName(url) {" + 
-                        "const pattern = /.*\/(.+?)\.([a-z]+)/;" + 
-                        "const pathPattern = /^(?:[^\/]*(?:\/(?:\/[^\/]*\/?)?)?([^?]+)(?:\??.+)?)$/;" + 
-                        "const path = url.match(pathPattern)[1];" + 
-                        "const fileName = decodeURI(path).match(pattern);" + 
-                        "return fileName !== null ? fileName[1] + '.' + fileName[2] : '';" + 
-                    "}*/" + 
                     "var listDownloadButtons = document.querySelectorAll('." + buttonClassName + "');" + 
-                    "listDownloadButtons.forEach(function(downloadButton){ " + 
+                    "listDownloadButtons.forEach(function(downloadButton){" + 
                         "if (downloadButton && downloadButton.href && downloadButton.href !== '#') {" + 
-                            "/*const fileName = GetFileName(downloadButton.href);*/" + 
-                            "downloadButton.addEventListener('click', downloadfile);/*function(e){" + 
-                                "console.log('filename: ' + fileName);"+
-                                "console.log(downloadButton);"+
-                                "var args = {" + 
-                                    "url: downloadButton.href," + 
-                                    "filename: fileName," + 
-                                "};" + 
-                                "webkit.messageHandlers.cordova_iab.postMessage(JSON.stringify(args));" + 
-                            "});*/" + 
+                            "downloadButton.addEventListener('click', downloadfile);" + 
                         "} else {" +
                             "console.warn('The following element has class «" + buttonClassName + "» but does not have a valid href: ', downloadButton);" +
                         "}" + 
